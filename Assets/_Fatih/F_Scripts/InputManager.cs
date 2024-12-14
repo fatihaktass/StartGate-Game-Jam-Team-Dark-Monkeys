@@ -25,6 +25,8 @@ public class InputManager : MonoBehaviour
         _playerInputs.Player.Jump.performed += OnJumpPerformed;
 
         _playerInputs.Player.Crouch.performed += OnCrouchPerformed;
+
+        _playerInputs.Player.Interact.performed += OnInteractPerformed;
     }
 
     public void OnDisable()
@@ -41,6 +43,8 @@ public class InputManager : MonoBehaviour
         _playerInputs.Player.Jump.performed -= OnJumpPerformed;
 
         _playerInputs.Player.Crouch.performed -= OnCrouchPerformed;
+
+        _playerInputs.Player.Interact.performed -= OnInteractPerformed;
 
         _playerInputs.Disable();
     }
@@ -62,5 +66,8 @@ public class InputManager : MonoBehaviour
 
     // Crouch
     private void OnCrouchPerformed(InputAction.CallbackContext context) => _playerController.Crouch();
+
+    // Interact
+    private void OnInteractPerformed(InputAction.CallbackContext context) => _playerController.Interact();
 }
 

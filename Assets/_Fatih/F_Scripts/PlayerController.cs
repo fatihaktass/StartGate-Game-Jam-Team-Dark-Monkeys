@@ -140,6 +140,24 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    public void Interact()
+    {
+        Debug.Log("basýldý");
+
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 3f))
+        {
+            if (hit.collider.CompareTag("Door"))
+            {
+                Debug.Log("doðru kapý " + hit.collider.name);
+            }
+
+            if (hit.collider.CompareTag("WrongDoor"))
+            {
+                Debug.Log("yanlýþ kapý " + hit.collider.name);
+            }
+        }
+    }
+
     #region Set Funcs
 
     public void SetJumpingValue(bool isActive)
