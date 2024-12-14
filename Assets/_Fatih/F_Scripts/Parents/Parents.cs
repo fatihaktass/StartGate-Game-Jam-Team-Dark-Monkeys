@@ -81,7 +81,7 @@ public class Parents : MonoBehaviour
 
         float angle = Vector3.Angle(transform.forward, directionToPlayer);
 
-        if (angle < 150f)
+        if (angle < 150f || Vector3.Distance(transform.position, player.position) < 5f)
         {
             return true;
         }

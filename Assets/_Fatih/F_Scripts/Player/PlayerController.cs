@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
 
     CharacterController _characterController;
     Animator _playerAnimator;
+    GameManager _gameManager;
 
     #region Unity Funcs
 
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _playerAnimator = GetComponentInChildren<Animator>();
+        _gameManager = FindAnyObjectByType<GameManager>();
     }
 
     void Update()
@@ -51,15 +53,6 @@ public class PlayerController : MonoBehaviour
         Jump();
         Gravity();
         SpeedChanger();
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
     }
 
     void LateUpdate()
@@ -184,6 +177,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void SettingsPanel()
+    {
+        _gameManager.SettingsPanel();
+    }
+
     #region Set Funcs
 
     public void SetJumpingValue(bool isActive)
@@ -204,6 +202,11 @@ public class PlayerController : MonoBehaviour
     public void SetMouseInput(Vector2 input)
     {
         mouseInput = input;
+    }
+
+    public void SetMouseSensivity(float Sensivity)
+    {
+        mouseSensivity = Sensivity;
     }
 
     #endregion
