@@ -9,11 +9,13 @@ public class Parents : MonoBehaviour
     [SerializeField] Transform playerTransform;
 
     NavMeshAgent agent;
+    Animator anim;
     GameManager _gameManager;
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
         _gameManager = FindAnyObjectByType<GameManager>();
     }
 
@@ -25,6 +27,8 @@ public class Parents : MonoBehaviour
         {
             goToWalkPoint = false;
             agent.SetDestination(playerTransform.position);
+            anim.SetBool("isRunning", true);
+
 
             if (Vector3.Distance(transform.position, playerTransform.position) < 2.5f)
             {
@@ -45,6 +49,7 @@ public class Parents : MonoBehaviour
     {
         if (!goToWalkPoint)
         {
+            anim.SetBool("isRunning", false);
             float randomX = Random.Range(-50f, 50f);
             float randomZ = Random.Range(-50f, 50f);
 
