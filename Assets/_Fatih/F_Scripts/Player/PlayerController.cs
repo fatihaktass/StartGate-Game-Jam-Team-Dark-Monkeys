@@ -16,9 +16,12 @@ public class PlayerController : MonoBehaviour
     [Header("Player Floats")]
     [SerializeField] float playerSpeed;
     [SerializeField] float jumpForce = 2f;
+    [SerializeField] float normalHeight = 2f;
     [SerializeField] float crouchHeight = 1f;
+    [SerializeField] float moveIndex;
 
     [Header("Player Bools")]
+    [SerializeField] bool isMoving;
     [SerializeField] bool isJumping;
     [SerializeField] bool isRunning;
     [SerializeField] bool isCrouching;
@@ -32,12 +35,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform cameraPosition;
 
     CharacterController _characterController;
+    Animator _playerAnimator;
 
     #region Unity Funcs
 
     void Start()
     {
         _characterController = GetComponent<CharacterController>();
+        _playerAnimator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -91,8 +96,8 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            _characterController.height = 2f;
-            _characterController.center = new Vector3(0, 1f, 0);
+            _characterController.height = normalHeight;
+            _characterController.center = new Vector3(0, normalHeight / 2, 0);
         }
     }
 
@@ -126,16 +131,37 @@ public class PlayerController : MonoBehaviour
     {
         if (isRunning && onGround && !isCrouching && (currentInput != Vector3.zero))
         {
+            moveIndex = 2;
             playerSpeed = 5f;
         }
         else if (onGround && isCrouching)
         {
+            moveIndex = 1;
             playerSpeed = 1.5f;
         }
         else
         {
+            moveIndex = 0;
             playerSpeed = 3f;
         }
+    }
+
+    void UpdateAnimationStates()
+    {
+        _playerAnimator.SetFloat("Horizontal", moveInput.x);
+        _playerAnimator.SetFloat("Vertical", moveInput.y);
+        _playerAnimator.SetBool("isMoving", isMoving);
+
+        if (onGround)
+        {
+            _playerAnimator.SetBool("isJumping", false);
+
+            if (GetJumpingValue())
+                _playerAnimator.SetBool("isJumping", true);
+        }
+
+        _playerAnimator.SetFloat("MoveIndex", moveIndex);
+
     }
 
     #endregion

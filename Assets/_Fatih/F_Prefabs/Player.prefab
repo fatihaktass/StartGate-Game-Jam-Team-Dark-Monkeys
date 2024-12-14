@@ -90,7 +90,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 0
   jumpForce: 3
+  normalHeight: 2
   crouchHeight: 1
+  moveIndex: 0
+  isMoving: 0
   isJumping: 0
   isRunning: 0
   isCrouching: 0
