@@ -9,20 +9,31 @@ public class Parents : MonoBehaviour
     [SerializeField] Transform playerTransform;
 
     NavMeshAgent agent;
+    GameManager _gameManager;
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        _gameManager = FindAnyObjectByType<GameManager>();
     }
 
     private void Update()
     {
         detectingPlayer = Physics.CheckSphere(transform.position, 10f, LayerMask.GetMask("Player"));
 
-        if (detectingPlayer && IsPlayerVisible(playerTransform))
+        if (detectingPlayer && IsPlayerVisibleAndFacing(playerTransform))
         {
             goToWalkPoint = false;
             agent.SetDestination(playerTransform.position);
+
+            if (Vector3.Distance(transform.position, playerTransform.position) < 2.5f)
+            {
+                transform.LookAt(new Vector3(playerTransform.position.x,
+                                                transform.position.y,
+                                                   playerTransform.position.z));
+                Debug.Log("oyuncu yakalandý");
+                _gameManager.FinishTheGame();
+            }
         }
         else
         {
@@ -56,18 +67,26 @@ public class Parents : MonoBehaviour
         } 
     }
 
-    private bool IsPlayerVisible(Transform player)
+    private bool IsPlayerVisibleAndFacing(Transform player)
     {
         Vector3 directionToPlayer = player.position - transform.position;
 
         if (Physics.Raycast(transform.position, directionToPlayer.normalized, out RaycastHit hit, directionToPlayer.magnitude))
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Default"))
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Blockers"))
             {
                 return false;
             }
         }
 
-        return true;
+        float angle = Vector3.Angle(transform.forward, directionToPlayer);
+
+        if (angle < 150f)
+        {
+            return true;
+        }
+
+        return false;
     }
+
 }
