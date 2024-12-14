@@ -32,7 +32,7 @@ public class Parents : MonoBehaviour
                                                 transform.position.y,
                                                    playerTransform.position.z));
                 Debug.Log("oyuncu yakalandý");
-                _gameManager.FinishTheGame();
+                _gameManager.FinishTheGame(false);
             }
         }
         else
@@ -81,7 +81,7 @@ public class Parents : MonoBehaviour
 
         float angle = Vector3.Angle(transform.forward, directionToPlayer);
 
-        if (angle < 150f || Vector3.Distance(transform.position, player.position) < 5f)
+        if (angle < 150f || Vector3.Distance(transform.position, player.position) < 4f)
         {
             return true;
         }
