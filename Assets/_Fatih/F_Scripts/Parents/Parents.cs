@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,6 +18,8 @@ public class Parents : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         _gameManager = FindAnyObjectByType<GameManager>();
+
+        StartCoroutine(SendRay());
     }
 
     private void Update()
@@ -94,4 +97,29 @@ public class Parents : MonoBehaviour
         return false;
     }
 
+
+    IEnumerator SendRay()
+    {
+        while (true)
+        {
+            Ray ray = new Ray(transform.position + Vector3.up * 1f, transform.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 5f))
+            {
+                if (hit.collider.CompareTag("Door"))
+                {
+                    Debug.Log("NPC kapýyý buldu!");
+
+                    Doors doorScript = hit.collider.GetComponent<Doors>();
+                    if (doorScript != null)
+                    {
+                        doorScript.DoorMovements(); 
+                    }
+                }
+            }
+
+            yield return new WaitForSeconds(0.5f);
+        }
+        
+    }
 }
