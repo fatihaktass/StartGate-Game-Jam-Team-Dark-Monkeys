@@ -174,6 +174,7 @@ public class PlayerController : MonoBehaviour
             if (hit.collider.CompareTag("Door"))
             {
                 Debug.Log("doðru kapý " + hit.collider.name);
+                hit.collider.gameObject.GetComponent<Doors>().DoorMovements();
             }
 
             if (hit.collider.CompareTag("WrongDoor"))
