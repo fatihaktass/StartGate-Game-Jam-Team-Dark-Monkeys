@@ -8,11 +8,14 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] Slider sensSlider;
     [SerializeField] TMP_Text sensText;
+    [SerializeField] Slider musicSlider;
+    [SerializeField] TMP_Text musicVolumeText;
     [SerializeField] GameObject inGameSettingsPanel;
     [SerializeField] GameObject finalPanel;
     [SerializeField] TMP_Text finalPanelText;
     [SerializeField] bool pausePanel;
     [SerializeField] bool gameFinished;
+    [SerializeField] AudioSource musicSource;
 
     PlayerController _playerController;
 
@@ -27,6 +30,12 @@ public class GameManager : MonoBehaviour
         {
             sensSlider.value = PlayerPrefs.GetFloat("Sensivity");
             SetSensivityInGame();
+        }
+
+        if (PlayerPrefs.HasKey("Music"))
+        {
+            musicSlider.value = PlayerPrefs.GetFloat("Music");
+            SetMusicVolumeInGame();
         }
     }
 
@@ -57,6 +66,13 @@ public class GameManager : MonoBehaviour
         _playerController.SetMouseSensivity(sensSlider.value);
         PlayerPrefs.SetFloat("Sensivity", sensSlider.value);
         sensText.text = (sensSlider.value / 30f).ToString("N1");
+    }
+
+    public void SetMusicVolumeInGame()
+    {
+        PlayerPrefs.SetFloat("Music", musicSlider.value);
+        musicVolumeText.text = (musicSlider.value * 100).ToString();
+        musicSource.volume = musicSlider.value;
     }
 
     public void FinishTheGame(bool didPlayerWin)
