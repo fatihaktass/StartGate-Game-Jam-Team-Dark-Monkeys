@@ -47,12 +47,18 @@ public class PlayerController : MonoBehaviour
         _gameManager = FindAnyObjectByType<GameManager>();
     }
 
+    void FixedUpdate()
+    {
+        isMoving = moveInput != Vector2.zero;
+    }
+
     void Update()
     {
         PlayerMovement();
         Jump();
         Gravity();
         SpeedChanger();
+        UpdateAnimationStates();
     }
 
     void LateUpdate()
